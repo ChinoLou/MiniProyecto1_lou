@@ -125,7 +125,7 @@ void Timer0IntHandler(void)
 
     /*
     if (color < 8){color = color*2;} else{color = 2;}
-    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, color); //prueba interrupción TMR0
+    GPIOPinWrite(GPIO_PORTF_BASE, GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3, color); //Prueba de la Interrupción TMR0
     */
 
     Acc_X = fAccel[0];
