@@ -14,7 +14,7 @@ C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/ccs/Debug/sensorlib.lib
 
 C_SRCS += \
 ../MiniProyecto_lou.c \
-C:/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.c \
+../PwmLib_cas.c \
 ../tm4c123gh6pm_startup_ccs.c \
 C:/ti/TivaWare_C_Series-2.1.4.178/utils/uartstdio.c 
 
@@ -44,7 +44,7 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../MiniProyecto_lou.c" \
-"C:/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.c" \
+"../PwmLib_cas.c" \
 "../tm4c123gh6pm_startup_ccs.c" \
 "C:/ti/TivaWare_C_Series-2.1.4.178/utils/uartstdio.c" 
 

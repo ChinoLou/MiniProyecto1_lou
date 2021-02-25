@@ -26,16 +26,6 @@
 	</natures>
 	<linkedResources>
 		<link>
-			<name>PwmLib_cas.c</name>
-			<type>1</type>
-			<locationURI>PARENT-2-TIVAWARE_INSTALL/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.c</locationURI>
-		</link>
-		<link>
-			<name>PwmLib_cas.h</name>
-			<type>1</type>
-			<locationURI>PARENT-2-TIVAWARE_INSTALL/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.h</locationURI>
-		</link>
-		<link>
 			<name>driverlib.lib</name>
 			<type>1</type>
 			<locationURI>TIVAWARE_INSTALL/driverlib/ccs/Debug/driverlib.lib</locationURI>
