@@ -36,7 +36,7 @@ MiniProyecto_lou.obj: C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/i2cm_drv.h
 MiniProyecto_lou.obj: C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/hw_mpu6050.h
 MiniProyecto_lou.obj: C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/mpu6050.h
 MiniProyecto_lou.obj: C:/ti/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h
-MiniProyecto_lou.obj: C:/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.h
+MiniProyecto_lou.obj: ../PwmLib_cas.h
 MiniProyecto_lou.obj: C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/math.h
 MiniProyecto_lou.obj: C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/_defs.h
 MiniProyecto_lou.obj: C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/machine/_limits.h
@@ -77,7 +77,7 @@ C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/i2cm_drv.h:
 C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/hw_mpu6050.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/sensorlib/mpu6050.h: 
 C:/ti/TivaWare_C_Series-2.1.4.178/utils/uartstdio.h: 
-C:/Users/josue/workspace_v10/PWM_prueba2/PwmLib_cas.h: 
+../PwmLib_cas.h: 
 C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/math.h: 
 C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/_defs.h: 
 C:/ti/ccs1000/ccs/tools/compiler/ti-cgt-arm_20.2.0.LTS/include/machine/_limits.h: 
