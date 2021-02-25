@@ -45,12 +45,12 @@
 #define COTA_INF      (-65.0)  //Cota Inferior del sistema --> GRADOS = Grad_to_PWMPulse(-65); // COTA INFERIOR val exacto para los 180°!!!
 
 // ---------------------------- VARIABLES --------------------------------
-volatile uint32_t ui32Load;        //Variables PWM
+volatile uint32_t ui32Load;         //Variables PWM
 volatile uint32_t ui32PWMClock;
 volatile uint8_t  color = 2;        //Prueba Interrupcion TMR0
-volatile bool     g_bMPU6050Done;      // A boolean that is set when a MPU6050 command has completed.
+volatile bool     g_bMPU6050Done;   // A boolean that is set when a MPU6050 command has completed.
 
-float   fAccel[3], fGyro[3];       //Variables MPU
+float   fAccel[3], fGyro[3];        //Variables MPU
 float   Acc_X, Acc_Y, Acc_Z;
 float   Giro_X, Giro_Y, Giro_Z;
 
@@ -64,7 +64,7 @@ float   dt = 0.001; //0.0005;
 uint32_t    GRADOS;
 
 // ************** PID *****************************
-float   roll_set_angle;      //roll_set_angle --> set point del PID
+float   roll_set_angle;     //roll_set_angle --> set point del PID
 float   salida_grados_y;
 float   error_roll   = 0;   //error actual
 float   error_roll_1 = 0;   //error previo
@@ -73,8 +73,9 @@ float   E_k_1 = 0 ;         //error acumulado_previo
 float   eD = 0;
 float   ang_gyro_x = 0;
 float   ang_gyro_y = 0;
-//uint8_t bandera_TMR; //bandera interrupción TIMER0
 float   roll__y_n_1;
+
+//uint8_t bandera_TMR; //bandera interrupción TIMER0
 
 // ------------------------- Constantes PID ---------------------------------
 float roll_pid_P = 0;
@@ -146,17 +147,6 @@ void Timer0IntHandler(void)
     filtro_ang_x = 0.98*(filtro_ang_x + Giro_X*D_T) + 0.02*pitch_x;  //Giro_X*D_T integracion cada dt seg. dt=1ms dado el TMR0
     filtro_ang_y = 0.98*(filtro_ang_y + Giro_Y*D_T) + 0.02*roll__y;
 
-
-    /*
-    ang_gyro_x += Giro_X*dt;
-    ang_gyro_y += Giro_Y*dt;
-    filtro_ang_x = 0.98*(filtro_ang_x + ang_gyro_x) + 0.02*pitch_x;
-    filtro_ang_y = 0.98*(filtro_ang_y + ang_gyro_y) + 0.02*roll__y;
-
-    pitchX_previous_error = filtro_ang_x; //errores previos
-    rollY__previous_error = filtro_ang_y;
-    */
-
     //bandera_TMR = 0x00; //se apaga la bandera de la interrupción
 }
 
@@ -207,22 +197,22 @@ int main(void)
         roll_pid_I = roll_pid_I + roll_Ki*error_roll;
         roll_pid_D = roll_Kd*eD;
         // --------------------------------------------------------------------------
-        salida_grados_y = roll_pid_P + roll_pid_I + roll_pid_D;  //salida_grados_y = roll_Kp*error_roll + roll_Ki*E_k + roll_Kd*eD;
+        salida_grados_y = roll_pid_P + roll_pid_I + roll_pid_D;  //salida_grados_y = roll_Kp*error_roll + roll_Ki*E_k + roll_Kd*eD; [SALIDA PID en FLOAT]
         rollY__previous_error = error_roll;
 
         if(salida_grados_y > COTA_SUP){salida_grados_y = COTA_SUP;}
         if(salida_grados_y < COTA_INF){salida_grados_y = COTA_INF;}
 
-        GRADOS = (uint32_t)Grad_to_PWMPulse(salida_grados_y);       //+= --> feedforward   [ver si es positivo o negativa la salida del PID (salida_grados_y)]
-        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_0, GRADOS);   //GRADOS = GRADOS + 1000;
+        GRADOS = (uint32_t)Grad_to_PWMPulse(salida_grados_y);    //Se utiliza la función creada para mapear el valor de float(-90@90) de la salida del PID a valores de pwm (215@1750)
+        PWMPulseWidthSet(PWM1_BASE, PWM_OUT_0, GRADOS);
 
 
         //Envío de datos por UART
-        UARTprintf("EjeY %02d | PID %02d | GRADOS %02d \n", (int)filtro_ang_y, (int)salida_grados_y, (int)GRADOS );
+        UARTprintf("EjeY %02d | PID %02d | GRADOS %02d \n", (int)filtro_ang_y, (int)salida_grados_y, (int)GRADOS ); //lectura datos MPU
 
 
         /*
-        if(GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_4)==0x00)   //GPIO_PIN_4 --> PF4 => SW1
+        if(GPIOPinRead(GPIO_PORTF_BASE,GPIO_PIN_4)==0x00)   //GPIO_PIN_4 --> PF4 => SW1 (Prueba pwm con botones TivaC!!!)
         {
             GRADOS = Grad_to_PWMPulse(90);
             PWMPulseWidthSet(PWM1_BASE, PWM_OUT_0, GRADOS);
@@ -264,16 +254,14 @@ void Init_Timer0(void){
 
     //SysCtlPeripheralEnable(SYSCTL_PERIPH_GPIOA);
     SysCtlPeripheralEnable(SYSCTL_PERIPH_TIMER0);         // Enable the Timer0 peripheral
-    // Wait for the Timer0 module to be ready.
-    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0))
+    while(!SysCtlPeripheralReady(SYSCTL_PERIPH_TIMER0))   // Wait for the Timer0 module to be ready.
     {
     }
     TimerConfigure(TIMER0_BASE, TIMER_CFG_PERIODIC);      // Se configura el TMR0_A con full width periodico
 
     //TimerLoadSet(TIMER0_BASE, TIMER_A, 40000000*2);     // Prueba Leds  TRM0 cada 2seg. --> frec = SysCtlClock/(40000000*2) = 0.5Hz => T_RM = 1/0.5Hz = 2seg
-    TimerLoadSet(TIMER0_BASE, TIMER_A, 40000);            // Prueba MPU   TRM0 cada 0.5ms.--> frec = SysCtlClock/(20000) = 2000Hz => T_RM = 1/2000Hz = 0.5ms
+    TimerLoadSet(TIMER0_BASE, TIMER_A, 40000);            // Prueba MPU   TRM0 cada 1ms.  --> frec = SysCtlClock/(40000) = 40,000000/(40000) =1000Hz => T_RM = 1/1000Hz = 1ms
 
-    //TimerLoadSet(TIMER0_BASE, TIMER_A, ui32Period - 1); // Tiempo para MPU
     TimerEnable(TIMER0_BASE, TIMER_A);                    // Enable the timers.
 
 }
@@ -403,7 +391,22 @@ roll__y_prev = filtro_ang_y;
 
 //pitch_x   = (atan2(fAccel[1], sqrt(fAccel[1] * fAccel[1] + fAccel[2] * fAccel[2])))*rad_to_deg; //giro eje y --> angulo eje x
 //roll__y   = (atan2(fAccel[0], sqrt(fAccel[1] * fAccel[1] + fAccel[2] * fAccel[2])))*rad_to_deg; //giro eje x --> angulo eje y
+
+
+
+    ang_gyro_x += Giro_X*dt;  //interrupcion TMR0
+    ang_gyro_y += Giro_Y*dt;
+    filtro_ang_x = 0.98*(filtro_ang_x + ang_gyro_x) + 0.02*pitch_x;
+    filtro_ang_y = 0.98*(filtro_ang_y + ang_gyro_y) + 0.02*roll__y;
+
+    pitchX_previous_error = filtro_ang_x; //errores previos
+    rollY__previous_error = filtro_ang_y;
+
+
 */
+
+
+
 
 
 
